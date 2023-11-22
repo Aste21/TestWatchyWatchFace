@@ -1,2 +1,2 @@
 # TestWatchyWatchFace
-A simple watchy watch face that changes based on the wrist position.
+A simple Watchy watch face that changes based on the wrist position.
