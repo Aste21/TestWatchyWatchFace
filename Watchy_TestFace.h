@@ -1,7 +1,7 @@
 #ifndef WATCHY_TESTFACE_H
 #define WATCHY_TESTFACE_H
 
-#include <Watchy.h>
+#include <MyWatchy.h>
 #include "icones.h"
 #include "FreeMonoBold20pt7b.h"
 
@@ -13,16 +13,19 @@ public:
     display.fillScreen(GxEPD_WHITE);
     uint8_t direction = sensor.getDirection();
     int cursorCoordinates[2];  // 0-x 1-y
+    int rotation = 0;
+    bool turnOff = false;
+    display.setRotation(0);
     switch (direction) {
       case DIRECTION_DISP_DOWN:
-        cursorCoordinates[0] = DISPLAY_WIDTH / 2 - 60;
-        cursorCoordinates[1] = DISPLAY_HEIGHT / 2 + 5;
+        turnOff = true;
         break;
       case DIRECTION_DISP_UP:
         cursorCoordinates[0] = DISPLAY_WIDTH / 2 - 60;
         cursorCoordinates[1] = DISPLAY_HEIGHT / 2 + 5;
         break;
       case DIRECTION_BOTTOM_EDGE:
+        display.setRotation(2);
         display.drawBitmap(DISPLAY_WIDTH / 2 - 68 / 2, DISPLAY_HEIGHT / 2 - 90 / 2, arrow_down, 68, 90, GxEPD_BLACK);
         cursorCoordinates[0] = DISPLAY_WIDTH / 2 - 60;
         cursorCoordinates[1] = DISPLAY_HEIGHT - 20;
@@ -46,7 +49,9 @@ public:
         break;
     }
     display.setTextColor(GxEPD_BLACK);
-    display.setFont(&FreeMonoBold20pt7b);
+    if(!turnOff)
+    {
+      display.setFont(&FreeMonoBold20pt7b);
     display.setCursor(cursorCoordinates[0], cursorCoordinates[1]);
     if (currentTime.Hour < 10) {
       display.print('0');
@@ -63,6 +68,7 @@ public:
       display.print('0');
     }
     display.print(currentTime.Minute);
+    } 
   }
 };
 
